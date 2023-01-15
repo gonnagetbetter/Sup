@@ -44,7 +44,7 @@ node app.js
 
 Якщо буде відсутній параметр то видасть помилку
 
-![POST /api/artifacts]([img]https://i.imgur.com/sp1P6fr.jpg[/img])
+![POST /api/artifacts](https://i.imgur.com/sp1P6fr.jpg)
 
 ### Оновлення артефакта 
 

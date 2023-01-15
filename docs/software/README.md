@@ -186,15 +186,18 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 * `connection` - папка в якій знаходиться модуль для з'єднання.
 * `connection/connector.js` - модуль для роботи з базою даних.
 ---
-*`routes` - папка з файлами роутів.
-*`routes/router.js` - файл з роутами для роботи.
+* `routes` - папка з файлами роутів.
+* `routes/router.js` - файл з роутами для роботи.
 --- 
-*`maneger` - папка для менеджера.
-*`manager/apiManager.js` - менеджер для виконання запитів до таблиці `Artifacts`.
+* `manager` - папка для менеджера.
+* `manager/apiManager.js` - менеджер для виконання запитів до таблиці `Artifacts`.
 
 ### Головний файл
 
 Головний файл `app.js`.
+
+```javascript
+
 
 'use strict';
 
