@@ -18,7 +18,7 @@ const addArtifact = ( req, res ) => {
 };
 
 const deleteArtifact = ( req, res ) => {
-    const id = req.body;
+    const { id } = req.params;
     const queryToDelete = `DELETE FROM artifacts WHERE id=${id}`;
     const queryToFind = `SELECT FROM artifacts WHERE id=${id}`;
     db.query(queryToFind, ( err,result ) => {
