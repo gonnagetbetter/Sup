@@ -54,6 +54,7 @@ const getArtifact = ( req, res ) => {
     const query = `SELECT * FROM artifacts WHERE id = ${id}`;
     db.query(query, ( err, result ) => {
         if(err) return res.status(500).json(err);
+        if(result.length === 0) return res.status(404).json('There is no artifact with such id.');
         return res.status(200).json(result); 
     });
 }
