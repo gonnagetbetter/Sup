@@ -20,7 +20,7 @@ const addArtifact = ( req, res ) => {
 const deleteArtifact = ( req, res ) => {
     const { id } = req.params;
     const queryToDelete = `DELETE FROM artifacts WHERE id=${id}`;
-    const queryToFind = `SELECT FROM artifacts WHERE id=${id}`;
+    const queryToFind = `SELECT * FROM artifacts WHERE id=${id}`;
     db.query(queryToFind, ( err,result ) => {
         if (err)  return res.status(500).json(err);
         if (!result) return res.status(404).json('There is no artifact with such id.');
