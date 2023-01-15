@@ -190,7 +190,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 *`routes/router.js` - файл з роутами для роботи.
 --- 
 *`maneger` - папка для менеджера.
-*`manager/apiManager.js` - менеджер для виконання запитів.
+*`manager/apiManager.js` - менеджер для виконання запитів до таблиці `Artifacts`.
 
 ### Головний файл
 
@@ -233,7 +233,7 @@ router
 module.exports = router;
 ```
 
-### Менеджер для роботи з запитами 
+### Менеджер для роботи з запитами до таблиці `Artifacts`
 
 ```javascript
 
