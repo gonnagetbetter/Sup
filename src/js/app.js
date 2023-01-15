@@ -4,10 +4,10 @@ const db = require('./connection/connector');
 const express = require('express');
 const app = express();
 
-const PORT = 3306;
+const PORT = 3000;
 
 app.use(express.json());
 
 app.use('/api', require('./routes/router'));
 
-db.connect(() => app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)));
+app.listen(PORT);

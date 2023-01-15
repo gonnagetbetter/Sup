@@ -9,11 +9,11 @@ const addArtifact = ( req, res ) => {
         .status(400)
         .json({message: 'You need to give full information about artifact.'})
     }
-    const query = `INSERT INTO artifacts SET`;
+    const query = `INSERT INTO artifacts SET ?`;
     const artifact = { name, description };
     db.query( query, artifact, (err) =>{
-        if(err) return res.status(500).json(err);
-        res.status(201).json({ message: 'Artifact has been added.' });
+        if (err) return res.status(500).json(err);
+        return res.status(201).json({ message: 'Artifact has been added.' });
     });
 };
 
@@ -48,16 +48,16 @@ const updateArtifact = ( req, res ) => {
 };
 
 const getArtifact = ( req, res ) => {
-    const id = req.body;
+    const { id } = req.params;    
     if (!id) return res.status(400).json({ message: 'Not enought params.' });
-    const query = `SELECT * FROM artifacts WHERE id: ${id}`;
+    const query = `SELECT * FROM artifacts WHERE id = ${id}`;
     db.query(query, ( err, result ) => {
         if(err) return res.status(500).json(err);
         return res.status(200).json(result); 
     });
 }
 
-const getAllArtifacts = (res) => {
+const getAllArtifacts = (_, res) => {
     const query = `SELECT * FROM artifacts`;
     db.query(query, (err, result) => {
         if (err) return res.status(500).json(err);

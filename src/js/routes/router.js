@@ -6,9 +6,9 @@ const { addArtifact, deleteArtifact, updateArtifact, getArtifact, getAllArtifact
 
 router
     .post('/artifacts', addArtifact)
-    .delete('/artifacts', deleteArtifact)
+    .delete('/artifacts/:id', deleteArtifact)
     .put('/artifacts', updateArtifact)
-    .get('/artifacts', getArtifact)
-    .get('/artifacts', getAllArtifacts);
+    .get('/artifacts/:id', getArtifact)
+    .get('/artifacts/:id', getAllArtifacts);
 
 module.exports = router;
