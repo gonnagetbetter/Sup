@@ -21,9 +21,10 @@ const deleteArtifact = ( req, res ) => {
     const { id } = req.params;
     const queryToDelete = `DELETE FROM artifacts WHERE id=${id}`;
     const queryToFind = `SELECT * FROM artifacts WHERE id=${id}`;
-    db.query(queryToFind, ( err,result ) => {
+    db.query(queryToFind, ( err, result ) => {
         if (err)  return res.status(500).json(err);
-        if (!result) return res.status(404).json('There is no artifact with such id.');
+        
+        if (result.length === 0) return res.status(404).json('There is no artifact with such id.');
     });
     db.query( queryToDelete, (err) =>{
         if (err) return res.status(500).json(err);
@@ -38,7 +39,7 @@ const updateArtifact = ( req, res ) => {
     }
     db.query(`SELECT * FROM artifacts WHERE  id=${id}` , (err, result) => {
         if (err) return res.status(500).json(err);
-        if (!result) return res.status(404).json('There is no artifact with such id.');
+        if (result.length === 0) return res.status(404).json('There is no artifact with such id.');
     });
     const query = `UPDATE artifacts SET name = '${name}', description = '${description}' WHERE id=${id}`;
     db.query(query, (err) =>{
