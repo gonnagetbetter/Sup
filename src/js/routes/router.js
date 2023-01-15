@@ -9,6 +9,6 @@ router
     .delete('/artifacts/:id', deleteArtifact)
     .put('/artifacts', updateArtifact)
     .get('/artifacts/:id', getArtifact)
-    .get('/artifacts/:id', getAllArtifacts);
+    .get('/artifacts', getAllArtifacts);
 
 module.exports = router;
