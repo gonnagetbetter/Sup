@@ -33,7 +33,7 @@ const deleteArtifact = ( req, res ) => {
 
 const updateArtifact = ( req, res ) => {  
     const { id, name, description } = req.body;
-    if ( ! ( id || name || description ) ) {
+    if ( ! ( id && name && description ) ) {
         return res.status(400).json({ message: 'Not enought params.'});
     }
     db.query(`SELECT * FROM artifacts WHERE  id=${id}` , (err, result) => {
