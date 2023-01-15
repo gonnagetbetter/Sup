@@ -176,3 +176,147 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 ## RESTfull сервіс для управління даними
 
+Для реалізації RESTfull сервісу використовується бібліотека `Express.js`.
+Для роботи з базою даних використовується бібліотека `MySQL2`.
+
+### Структура проєкту
+
+* `app.js` - головний файл проекту, в якому виконується ініціалізація сервера та роутів.
+---
+* `connection` - папка в якій знаходиться модуль для з'єднання.
+* `connection/connector.js` - модуль для роботи з базою даних.
+---
+*`routes` - папка з файлами роутів.
+*`routes/router.js` - файл з роутами для роботи.
+--- 
+*`maneger` - папка для менеджера.
+*`manager/apiManager.js` - менеджер для виконання запитів.
+
+### Головний файл
+
+Головний файл `app.js`.
+
+'use strict';
+
+const db = require('./connection/connector');
+const express = require('express');
+const app = express();
+
+const PORT = 3000;
+
+app.use(express.json());
+
+app.use('/api', require('./routes/router'));
+
+app.listen(PORT);
+```
+
+### Маршрутизація
+
+Маршрутизація знаходиться в файлі `routes/router.js`.
+
+```javascript
+
+'use strict';
+
+const express = require("express");
+const router = express.Router();
+const { addArtifact, deleteArtifact, updateArtifact, getArtifact, getAllArtifacts } = require('../manager/apiManager');
+
+router
+    .post('/artifacts', addArtifact)
+    .delete('/artifacts/:id', deleteArtifact)
+    .put('/artifacts', updateArtifact)
+    .get('/artifacts/:id', getArtifact)
+    .get('/artifacts', getAllArtifacts);
+
+module.exports = router;
+```
+
+### Менеджер для роботи з запитами 
+
+```javascript
+
+'use strict';
+
+const db = require('../connection/connector')
+
+const addArtifact = ( req, res ) => {
+    const { name, description } = req.body;
+    if ( ! ( name && description ) ) {
+        return res
+        .status(400)
+        .json({message: 'You need to give full information about artifact.'})
+    }
+    const query = `INSERT INTO artifacts SET ?`;
+    const artifact = { name, description };
+    db.query( query, artifact, (err) =>{
+        if (err) return res.status(500).json(err);
+        return res.status(201).json({ message: 'Artifact has been added.' });
+    });
+};
+
+const deleteArtifact = ( req, res ) => {
+    const { id } = req.params;
+    const queryToDelete = `DELETE FROM artifacts WHERE id=${id}`;
+    const queryToFind = `SELECT * FROM artifacts WHERE id=${id}`;
+    db.query(queryToFind, ( err,result ) => {
+        if (err)  return res.status(500).json(err);
+        if (!result) return res.status(404).json('There is no artifact with such id.');
+    });
+    db.query( queryToDelete, (err) =>{
+        if (err) return res.status(500).json(err);
+        return res.status(200).json({ message: "Artifact has been deleted." });
+    });
+};
+
+const updateArtifact = ( req, res ) => {  
+    const { id, name, description } = req.body;
+    if ( ! ( id && name && description ) ) {
+        return res.status(400).json({ message: 'Not enought params.'});
+    }
+    db.query(`SELECT * FROM artifacts WHERE  id=${id}` , (err, result) => {
+        if (err) return res.status(500).json(err);
+        if (!result) return res.status(404).json('There is no artifact with such id.');
+    });
+    const query = `UPDATE artifacts SET name = '${name}', description = '${description}' WHERE id=${id}`;
+    db.query(query, (err) =>{
+        if(err) return res.status(500).json(err);
+        return res.status(200).json({message: 'Artifact has been updated'});
+    });
+};
+
+const getArtifact = ( req, res ) => {
+    const { id } = req.params;    
+    if (!id) return res.status(400).json({ message: 'Not enought params.' });
+    const query = `SELECT * FROM artifacts WHERE id = ${id}`;
+    db.query(query, ( err, result ) => {
+        if(err) return res.status(500).json(err);
+        return res.status(200).json(result); 
+    });
+}
+
+const getAllArtifacts = (_, res) => {
+    const query = `SELECT * FROM artifacts`;
+    db.query(query, (err, result) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json(result);
+    })
+}
+
+
+module.exports = { addArtifact, deleteArtifact, updateArtifact, getArtifact, getAllArtifacts};
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
